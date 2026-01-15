@@ -1,12 +1,14 @@
 'use client';
 
-import { Flame, Timer, Footprints, Heart, Droplets, Moon } from 'lucide-react';
+import { useState } from 'react';
+import { Flame, Timer, Footprints, Heart, Droplets, Moon, Plus, Layout, Dumbbell } from 'lucide-react';
 import ActivityRing from '@/components/Dashboard/ActivityRing';
 import StatCard from '@/components/Dashboard/StatCard';
 import HealthChart from '@/components/Dashboard/HealthChart';
+import LogModal from '@/components/Modals/LogModal';
 import styles from './page.module.css';
 
-const activityData = [
+const initialActivityData = [
   { label: 'Mon', value: 65 },
   { label: 'Tue', value: 80 },
   { label: 'Wed', value: 45 },
@@ -17,15 +19,84 @@ const activityData = [
 ];
 
 export default function Dashboard() {
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [modalOpen, setModalOpen] = useState<'workout' | 'water' | 'sleep' | null>(null);
+
+  // Mock State for interactivity demo
+  const [waterIntake, setWaterIntake] = useState(1.2);
+  const [sleepTime, setSleepTime] = useState('7h 20m');
+
+  const handleLogSubmit = (data: Record<string, string>) => {
+    if (modalOpen === 'water' && data.amount) {
+      setWaterIntake(prev => parseFloat((prev + parseFloat(data.amount)).toFixed(1)));
+    } else if (modalOpen === 'sleep' && data.hours) {
+      setSleepTime(`${data.hours}h ${data.minutes || '0'}m`);
+    }
+    // Workout logging would typically update a list or backend
+    console.log(`Logged ${modalOpen}:`, data);
+  };
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 className={styles.welcomeText}>Welcome back, Priyanka</h1>
-        <p className={styles.dateText}>Monday, January 13, 2026</p>
+        <div>
+          <h1 className={styles.welcomeText}>Welcome back, Priyanka</h1>
+          <p className={styles.dateText}>Monday, January 13, 2026</p>
+        </div>
+        <div style={{ display: 'flex', gap: 'var(--spacing-sm)' }}>
+          <button
+            onClick={() => setIsEditMode(!isEditMode)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              padding: '8px 16px', borderRadius: 'var(--radius-md)',
+              border: isEditMode ? '1px solid var(--primary)' : '1px solid var(--glass-border)',
+              background: isEditMode ? 'rgba(99, 102, 241, 0.1)' : 'var(--surface-card)',
+              color: isEditMode ? 'var(--primary)' : 'var(--text-secondary)',
+              cursor: 'pointer', transition: 'all 0.2s'
+            }}
+          >
+            <Layout size={18} />
+            {isEditMode ? 'Done' : 'Edit Layout'}
+          </button>
+          <button
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              padding: '8px 16px', borderRadius: 'var(--radius-md)',
+              background: 'var(--primary)', color: 'white', border: 'none',
+              cursor: 'pointer', boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)'
+            }}
+            onClick={() => alert('Widget Library feature coming soon!')}
+          >
+            <Plus size={18} />
+            Add Widget
+          </button>
+        </div>
       </header>
 
+      {/* Quick Actions */}
+      <section style={{ marginBottom: 'var(--spacing-lg)', display: 'flex', gap: 'var(--spacing-md)' }}>
+        <button
+          onClick={() => setModalOpen('workout')}
+          style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px', background: 'var(--surface-highlight)', border: 'none', borderRadius: 'full', color: 'var(--text-primary)', cursor: 'pointer', transition: 'transform 0.1s' }}
+        >
+          <Dumbbell size={16} /> Log Workout
+        </button>
+        <button
+          onClick={() => setModalOpen('water')}
+          style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px', background: 'var(--surface-highlight)', border: 'none', borderRadius: 'full', color: 'var(--text-primary)', cursor: 'pointer' }}
+        >
+          <Droplets size={16} /> Log Water
+        </button>
+        <button
+          onClick={() => setModalOpen('sleep')}
+          style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px', background: 'var(--surface-highlight)', border: 'none', borderRadius: 'full', color: 'var(--text-primary)', cursor: 'pointer' }}
+        >
+          <Moon size={16} /> Log Sleep
+        </button>
+      </section>
+
       {/* Activity Rings Section */}
-      <section className={`${styles.ringsGrid} animate-slide-up`}>
+      <section className={`${styles.ringsGrid} animate-slide-up`} style={{ border: isEditMode ? '2px dashed var(--text-secondary)' : 'none', padding: isEditMode ? '1rem' : '0', borderRadius: 'var(--radius-lg)' }}>
         <div className={styles.ringCard}>
           <div className={styles.ringInfo}>
             <span className={styles.ringLabel}>Move</span>
@@ -93,14 +164,14 @@ export default function Dashboard() {
         />
         <StatCard
           title="Water Intake"
-          value="1.2 L"
+          value={`${waterIntake} L`}
           icon={Droplets}
           trend={{ value: 20, direction: 'down' }}
           color="var(--accent-cyan)"
         />
         <StatCard
           title="Sleep"
-          value="7h 20m"
+          value={sleepTime}
           icon={Moon}
           trend={{ value: 8, direction: 'up' }}
           color="var(--primary)"
@@ -111,7 +182,7 @@ export default function Dashboard() {
       <section className={`${styles.chartsSection} animate-slide-up`} style={{ animationDelay: '0.2s' }}>
         <HealthChart
           title="Weekly Activity"
-          data={activityData}
+          data={initialActivityData}
           color="var(--primary)"
         />
         {/* Placeholder for another smaller chart or list */}
@@ -140,6 +211,38 @@ export default function Dashboard() {
           </div>
         </div>
       </section>
+
+      {/* Modals */}
+      <LogModal
+        isOpen={modalOpen === 'workout'}
+        onClose={() => setModalOpen(null)}
+        title="Log Workout"
+        fields={[
+          { label: 'Workout Type', type: 'text', placeholder: 'e.g. Running', key: 'type' },
+          { label: 'Duration (min)', type: 'number', placeholder: '30', key: 'duration' },
+          { label: 'Calories Burned', type: 'number', placeholder: '300', key: 'calories' },
+        ]}
+        onSubmit={handleLogSubmit}
+      />
+      <LogModal
+        isOpen={modalOpen === 'water'}
+        onClose={() => setModalOpen(null)}
+        title="Log Water"
+        fields={[
+          { label: 'Amount (L)', type: 'number', placeholder: '0.5', key: 'amount' },
+        ]}
+        onSubmit={handleLogSubmit}
+      />
+      <LogModal
+        isOpen={modalOpen === 'sleep'}
+        onClose={() => setModalOpen(null)}
+        title="Log Sleep"
+        fields={[
+          { label: 'Hours', type: 'number', placeholder: '7', key: 'hours' },
+          { label: 'Minutes', type: 'number', placeholder: '30', key: 'minutes' },
+        ]}
+        onSubmit={handleLogSubmit}
+      />
     </div>
   );
 }

@@ -2,12 +2,15 @@
 
 A premium, high-performance fitness tracking application built with **Next.js** and **Vanilla CSS**. This project features a visually stunning, glassmorphic dark theme, interactive activity rings, and a comprehensive workout logging system designed to provide users with a delightful and motivating experience.
 
+![Dashboard Preview](./public/dashboard-preview.png)
+
 ## ✨ Features
 
-- **Dynamic Dashboard**: 
+- **Dynamic & Interactive Dashboard**: 
   - **Activity Rings**: SVG-based animated progress rings for daily goals (Move, Exercise, Stand).
   - **Daily Stats**: Interactive cards displaying Steps, Heart Rate, Water Intake, and Sleep.
-  - **Health Metrics**: Visual charts tracking weekly activity trends.
+  - **Quick Actions**: Log workouts, water, and sleep directly from the dashboard with intuitive modals.
+  - **Customization**: Toggle "Edit Layout" mode to visualize widget arrangement.
 - **Workout Tracking**:
   - **Exercise Library**: Curated list of exercises with muscle group tags.
   - **Activity History**: Detailed log of recent workouts with duration and calorie stats.
@@ -47,6 +50,7 @@ graph TD
         Dashboard --> ActivityRings[Activity Rings]
         Dashboard --> StatCards[Stat Cards]
         Dashboard --> HealthCharts[Health Charts]
+        Dashboard --> Modals[Log Modals]
     end
 
     subgraph "Workout Components"
@@ -58,8 +62,21 @@ graph TD
         Sidebar -.-> CSS[Global CSS Variables]
         ActivityRings -.-> CSS
         StatCards -.-> CSS
+        Modals -.-> CSS
     end
 ```
+
+### 🧩 Architecture Overview
+
+The **Premium Fitness Tracker** is architected as a **Next.js 15** application leveraging the **App Router** for efficient routing and server-side rendering capabilities.
+
+-   **Data Flow**: The application uses a unidirectional data flow. The `Dashboard` page serves as the connection point (container), managing state for modals and data distribution to child components like `ActivityRings` and `StatCards`.
+-   **Component Design**:
+    -   **Atomic Components**: Small, reusable UI elements (e.g., `ActivityRing`, `StatCard`) are built to be stateless and presentational.
+    -   **Layout Handling**: A persistent `Sidebar` and `LayoutWrapper` ensure navigation remains consistent across page transitions.
+    -   **Modals**: The `LogModal` component is implemented as a portal-like overlay, allowing users to interact with the application without leaving the current context.
+-   **Styling Strategy**: We utilize **CSS Modules** for component-level style isolation, combined with **Global CSS Variables** for theming. This ensures the "Premium Dark Mode" is consistent and easily maintainable across the entire application.
+
 
 ## 🚀 Getting Started
 
