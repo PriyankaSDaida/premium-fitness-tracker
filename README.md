@@ -109,6 +109,18 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
+## � Future Enhancements
+
+The following features are planned for future updates to elevate the Fitness Tracker to a production-ready SaaS product:
+
+- **Backend Integration**: Implement **Supabase** or **PostgreSQL** with Prisma to persist user data, workout logs, and settings.
+- **Authentication**: Add secure user sessions using **Clerk** or **NextAuth.js** to support multiple user profiles.
+- **Wearable Sync**: Integration with **Apple HealthKit** and **Google Fit** APIs to automatically import step counts and activity data.
+- **Advanced Visualization**: Interactive graphs using **Recharts** to analyze long-term health trends and progress.
+- **AI Coaching**: Personalised workout recommendations and health insights powered by LLMs.
+- **Social Features**: Friend leaderboards, activity sharing, and community challenges.
+- **PWA Support**: Enable "Install to Home Screen" functionality for a native app-like experience on mobile devices.
+
+## �📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
