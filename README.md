@@ -61,7 +61,7 @@ graph TD
     end
 
     subgraph "Dashboard Logic"
-        Dashboard --> LayoutState[Layout State (Order & Visibility)]
+        Dashboard --> LayoutState["Layout State (Order & Visibility)"]
         Dashboard --> ActivityRings[Activity Rings]
         Dashboard --> StatCards[Stat Cards]
         Dashboard --> HealthCharts[Health Charts]
@@ -69,7 +69,7 @@ graph TD
     end
 
     subgraph "Styling System"
-        ThemeContext -.->|Toggles Class| Body[body.theme-pastel / .theme-dark]
+        ThemeContext -.->|Toggles Class| Body["body.theme-pastel / .theme-dark"]
         Body -.-> CSS[Global CSS Variables]
     end
 ```
