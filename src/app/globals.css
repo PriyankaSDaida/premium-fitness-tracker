@@ -1,33 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Colors - Premium Dark Theme */
-  --background: #0F172A;
-  --surface: #1E293B;
-  --surface-highlight: #334155;
-
-  /* Primary - Vibrant Purple/Blue Gradient */
-  --primary: #6366f1;
-  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-
-  /* Accents */
-  --accent-blue: #3b82f6;
-  --accent-cyan: #06b6d4;
-  --accent-pink: #ec4899;
-  --accent-green: #10b981;
-  --accent-orange: #f97316;
-
-  /* Status */
-  --success: #10b981;
-  --warning: #f59e0b;
-  --error: #ef4444;
-
-  /* Typography */
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-tertiary: #64748B;
-
-  /* Spacing */
+  /* Default Defaults (can be overridden) */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -35,13 +9,70 @@
   --spacing-xl: 2rem;
   --spacing-2xl: 3rem;
 
-  /* Border Radius */
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
   --radius-full: 9999px;
+}
 
-  /* Effects */
+/* Theme: Pastel (Light) */
+.theme-pastel {
+  --background: #FDFBF7;
+  /* Warm Cream */
+  --surface: #FFFFFF;
+  /* White */
+  --surface-highlight: #F3F4F6;
+  /* Soft Grey */
+
+  --primary: #A78BFA;
+  --primary-gradient: linear-gradient(135deg, #A78BFA 0%, #F472B6 100%);
+
+  --accent-blue: #60A5FA;
+  --accent-cyan: #67E8F9;
+  --accent-pink: #F9A8D4;
+  --accent-green: #6EE7B7;
+  --accent-orange: #FDBA74;
+
+  --success: #34D399;
+  --warning: #FCD34D;
+  --error: #F87171;
+
+  --text-primary: #334155;
+  --text-secondary: #64748B;
+  --text-tertiary: #94A3B8;
+
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-highlight: rgba(255, 255, 255, 0.2);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-glow: 0 0 20px rgba(167, 139, 250, 0.2);
+}
+
+/* Theme: Dark (Original Premium) */
+.theme-dark {
+  --background: #0F172A;
+  --surface: #1E293B;
+  --surface-highlight: #334155;
+
+  --primary: #6366f1;
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+
+  --accent-blue: #3b82f6;
+  --accent-cyan: #06b6d4;
+  --accent-pink: #ec4899;
+  --accent-green: #10b981;
+  --accent-orange: #f97316;
+
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-tertiary: #64748B;
+
   --glass-bg: rgba(30, 41, 59, 0.7);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-highlight: rgba(255, 255, 255, 0.05);
@@ -71,6 +102,7 @@ body {
   font-family: 'Outfit', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {

@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   description: 'Manage your health and fitness with elegance.',
 };
 
+import { ThemeProvider } from '@/context/ThemeContext';
 import LayoutWrapper from '@/components/Layout/LayoutWrapper';
 
 export default function RootLayout({
@@ -22,8 +23,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={outfit.className}>
-        <LayoutWrapper>{children}</LayoutWrapper>
+      <body className={outfit.className} suppressHydrationWarning>
+        <ThemeProvider>
+          <LayoutWrapper>{children}</LayoutWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );

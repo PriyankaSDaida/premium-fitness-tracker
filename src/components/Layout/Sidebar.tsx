@@ -8,8 +8,8 @@ import styles from './Sidebar.module.css';
 
 const navItems = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+    { name: 'Analytics', href: '/analytics', icon: Activity },
     { name: 'Workouts', href: '/workouts', icon: Dumbbell },
-    { name: 'Health Stats', href: '/health', icon: Activity },
     { name: 'Settings', href: '/settings', icon: Settings },
 ];
 

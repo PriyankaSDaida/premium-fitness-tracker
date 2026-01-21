@@ -1,82 +1,90 @@
 # Premium Fitness Tracker
 
-A premium, high-performance fitness tracking application built with **Next.js** and **Vanilla CSS**. This project features a visually stunning, glassmorphic dark theme, interactive activity rings, and a comprehensive workout logging system designed to provide users with a delightful and motivating experience.
+A premium, high-performance fitness tracking application built with **Next.js** and **Vanilla CSS**. This project features a visually stunning interface with dual theme support (Dark/Pastel), interactive Dashboard customization, and a comprehensive workout logging system.
 
 ![Dashboard Preview](./public/dashboard-preview.png)
 
 ## ✨ Features
 
-- **Dynamic & Interactive Dashboard**: 
+- **Personalized Dashboard Experience**: 
+  - **Drag & Drop Reordering**: Completely customize your dashboard layout by dragging widgets to your preferred order.
+  - **Visibility Toggles**: Hide specific widgets (like Activity Rings or Charts) to focus on what matters most to you.
   - **Activity Rings**: SVG-based animated progress rings for daily goals (Move, Exercise, Stand).
   - **Daily Stats**: Interactive cards displaying Steps, Heart Rate, Water Intake, and Sleep.
-  - **Quick Actions**: Log workouts, water, and sleep directly from the dashboard with intuitive modals.
-  - **Customization**: Toggle "Edit Layout" mode to visualize widget arrangement.
+  
+- **Dual Theme System**:
+  - **Pastel Mode (New)**: A soothing, light theme with warm cream backgrounds and soft accents (Violet, Mint, Pink).
+  - **Premium Dark Mode**: Deep, elegant dark theme with vibrant neon gradients.
+  - **Persistence**: User theme preference is saved and automatically applied on next visit.
+
+- **Navigation & Pages**:
+  - **Analytics**: A dedicated page for deeper health insights (coming soon).
+  - **Settings**: Manage your profile and app preferences, including the Theme Switcher.
+  - **Working Sidebar**: Fully functional navigation links with active state highlighting.
+
 - **Workout Tracking**:
-  - **Exercise Library**: Curated list of exercises with muscle group tags.
-  - **Activity History**: Detailed log of recent workouts with duration and calorie stats.
-- **Premium UX/UI**:
-  - **Dark Mode**: Deep, elegant color palette with vibrant gradients.
-  - **Glassmorphism**: Translucent panels and blurs for a modern aesthetic.
-  - **Micro-animations**: Smooth entrance animations and hover effects.
-  - **Responsive Design**: Flawless experience across mobile, tablet, and desktop.
+  - **Quick Actions**: Log workouts, water, and sleep directly from the 
+  - **Activity History**: View logs of recent activities.
 
 ## 🛠 Tech Stack
 
 - **Framework**: [Next.js 15 (App Router)](https://nextjs.org/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **State Management**: React Context (Theme), Local State (Dashboard)
 - **Styling**: Vanilla CSS (CSS Modules & Variables)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Fonts**: [Outfit](https://fonts.google.com/specimen/Outfit) (via `next/font`)
 
 ## 🏗 Architecture
 
-The application follows a component-based architecture optimized for performance and maintainability.
+The application follows a modular, component-based architecture powered by React Context for global state management.
 
 ```mermaid
 graph TD
     User[User] -->|Visits| App[Next.js App]
     
+    subgraph "Global State"
+        ThemeContext[Theme Context Provider]
+    end
+
     subgraph "Core Layout"
-        App --> Sidebar[Sidebar Navigation]
-        App --> Layout[Layout Wrapper]
+        App --> ThemeContext
+        ThemeContext --> Layout[Layout Wrapper]
+        Layout --> Sidebar[Sidebar Navigation]
+        Layout --> PageContent[Page Content]
     end
 
     subgraph "Pages"
-        Layout --> Dashboard[Dashboard Page]
-        Layout --> Workouts[Workouts Page]
+        PageContent --> Dashboard[Dashboard Page]
+        PageContent --> Analytics[Analytics Page]
+        PageContent --> Settings[Settings Page]
     end
 
-    subgraph "Dashboard Components"
+    subgraph "Dashboard Logic"
+        Dashboard --> LayoutState[Layout State (Order & Visibility)]
         Dashboard --> ActivityRings[Activity Rings]
         Dashboard --> StatCards[Stat Cards]
         Dashboard --> HealthCharts[Health Charts]
         Dashboard --> Modals[Log Modals]
     end
 
-    subgraph "Workout Components"
-        Workouts --> WorkoutList[Workout Log]
-        Workouts --> ExerciseLib[Exercise Library]
-    end
-
-    subgraph "Design System"
-        Sidebar -.-> CSS[Global CSS Variables]
-        ActivityRings -.-> CSS
-        StatCards -.-> CSS
-        Modals -.-> CSS
+    subgraph "Styling System"
+        ThemeContext -.->|Toggles Class| Body[body.theme-pastel / .theme-dark]
+        Body -.-> CSS[Global CSS Variables]
     end
 ```
 
 ### 🧩 Architecture Overview
 
-The **Premium Fitness Tracker** is architected as a **Next.js 15** application leveraging the **App Router** for efficient routing and server-side rendering capabilities.
+The **Premium Fitness Tracker** leverages the **Next.js 15 App Router** for performance and SEO.
 
--   **Data Flow**: The application uses a unidirectional data flow. The `Dashboard` page serves as the connection point (container), managing state for modals and data distribution to child components like `ActivityRings` and `StatCards`.
+-   **Global Theme Management**: A `ThemeContext` provider wraps the entire application, managing the user's preferred theme (Dark vs. Pastel) and persisting it to `localStorage`. It dynamically updates the `body` class, enabling CSS variables to cascade changes instantly across the app.
+-   **Dashboard Container**: The `Dashboard` page is a "smart" container that manages:
+    -   **Widget Visibility**: State to track which sections are shown/hidden.
+    -   **Layout Order**: An array state tracking the sequence of widgets, manipulated via the HTML5 Drag and Drop API.
 -   **Component Design**:
     -   **Atomic Components**: Small, reusable UI elements (e.g., `ActivityRing`, `StatCard`) are built to be stateless and presentational.
-    -   **Layout Handling**: A persistent `Sidebar` and `LayoutWrapper` ensure navigation remains consistent across page transitions.
-    -   **Modals**: The `LogModal` component is implemented as a portal-like overlay, allowing users to interact with the application without leaving the current context.
--   **Styling Strategy**: We utilize **CSS Modules** for component-level style isolation, combined with **Global CSS Variables** for theming. This ensures the "Premium Dark Mode" is consistent and easily maintainable across the entire application.
-
+    -   **Section Wrappers**: A specialized wrapper component handles the specific drag-and-drop events and visibility styles for each dashboard widget.
 
 ## 🚀 Getting Started
 
@@ -109,18 +117,14 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## � Future Enhancements
-
-The following features are planned for future updates to elevate the Fitness Tracker to a production-ready SaaS product:
+## 🔮 Future Enhancements
 
 - **Backend Integration**: Implement **Supabase** or **PostgreSQL** with Prisma to persist user data, workout logs, and settings.
-- **Authentication**: Add secure user sessions using **Clerk** or **NextAuth.js** to support multiple user profiles.
-- **Wearable Sync**: Integration with **Apple HealthKit** and **Google Fit** APIs to automatically import step counts and activity data.
-- **Advanced Visualization**: Interactive graphs using **Recharts** to analyze long-term health trends and progress.
-- **AI Coaching**: Personalised workout recommendations and health insights powered by LLMs.
-- **Social Features**: Friend leaderboards, activity sharing, and community challenges.
-- **PWA Support**: Enable "Install to Home Screen" functionality for a native app-like experience on mobile devices.
+- **Authentication**: Add secure user sessions using **Clerk** or **NextAuth.js**.
+- **Wearable Sync**: Integration with **Apple HealthKit** and **Google Fit** APIs.
+- **Advanced Visualization**: Interactive graphs using **Recharts** to analyze long-term health trends.
+- **Widget Library**: A modal to add new widgets (Hydration, Sleep, Calories) dynamically.
 
-## �📄 License
+## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
