@@ -17,6 +17,31 @@
         width: 100%;
         padding: var(--spacing-md);
         padding-bottom: 80px;
-        /* Space for bottom nav if we added one, or just general spacing */
+        padding-top: 60px;
+        /* Space for hamburger */
+    }
+}
+
+.hamburger {
+    display: none;
+    /* Hidden on desktop */
+    position: fixed;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    z-index: 60;
+    background: var(--surface-card);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 8px;
+    color: var(--text-primary);
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
